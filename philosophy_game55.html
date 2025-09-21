@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Philosophy Personality Quiz - Discover Your Philosophical Identity</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 100px auto 0;
+            padding: 20px;
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+
+        /* Game Interface */
+        .game-interface {
+            display: none;
+        }
+
+        .game-interface.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(74, 85, 104, 0.2);
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .question-counter {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4a5568;
+            font-size: 1.1em;
+        }
+
+        .scenario-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .scenario-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .scenario-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .choices {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .choice-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .choice-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .choice-btn:active {
+            transform: translateY(0);
+        }
+
+        .choice-btn .philosophy-tag {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7em;
+            opacity: 0.8;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            font-weight: bold;
+            margin: 10px auto;
+            display: block;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Results Page */
+        .results-container {
+            display: none;
+            text-align: center;
+        }
+
+        .results-container.active {
+            display: block;
+        }
+
+        .philosophy-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .philosophy-name {
+            font-size: 2.5em;
+            color: #4a5568;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .philosophy-subtitle {
+            font-size: 1.2em;
+            color: #718096;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .philosophy-description {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #4a5568;
+            margin-bottom: 30px;
+        }
+
+        .philosophy-traits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .trait-card {
+            background: rgba(74, 85, 104, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .trait-title {
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .trait-text {
+            color: #718096;
+            line-height: 1.5;
+        }
+
+        .compatibility-section {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .compatibility-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+
+        .philosophy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .philosophy-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .philosophy-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .philosophy-card .emoji {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .philosophy-card .name {
+            font-weight: bold;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .philosophy-card .subtitle {
+            font-size: 0.9em;
+            color: #718096;
+        }
+
+        .hidden { display: none; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .main-container {
+                padding: 10px;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+
+            .philosophy-traits {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="#" class="logo" onclick="showHome()">🧠 Philosophy Personality</a>
+            <div class="nav-links">
+                <a href="#" onclick="showHome()" class="nav-link active" id="home-link">Home</a>
+                <a href="#" onclick="showGame()" class="nav-link" id="game-link">Take Quiz</a>
+                <a href="#" onclick="showPhilosophies()" class="nav-link" id="philosophies-link">All Types</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="main-container">
+        <!-- Home Section -->
+        <section id="home-section" class="section active">
+            <div class="hero">
+                <h1>Philosophy Personality Quiz</h1>
+                <p>Discover which philosophical tradition resonates with your worldview</p>
+                <a href="#" class="cta-button" onclick="showGame()">Discover Your Philosophy</a>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">10</div>
+                    <div class="stat-label">Philosophical Types</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">Thought Experiments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2500+</div>
+                    <div class="stat-label">Years of Wisdom</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>🎯 How It Works</h2>
+                <p>Journey through 8 famous philosophical thought experiments. Each choice you make reveals something about your fundamental beliefs and values. At the end, discover which of 10 philosophical traditions best matches your worldview - from ancient wisdom to modern insights.</p>
+            </div>
+
+            <div class="card">
+                <h2>🏛️ The 10 Philosophical Types</h2>
+                <div class="philosophy-grid">
+                    <div class="philosophy-card" onclick="showPhilosophies()">
+                        <div class="emoji">⚖️</div>
+                        <div class="name">The Utilitarian</div>
+                        <div class="subtitle">Greatest good for all</div>
+                    </div>
+                    <div class="philosophy-card" onclick="showPhilosophies()">
+                        <div class="emoji">📏</div>
+                        <div class="name">The Deontologist</div>
+                        <div class="subtitle">Duty and moral rules</div>
+                    </div>
+                    <div class="philosophy-card" onclick="showPhilosophies()">
+                        <div class="emoji">🌟</div>
+                        <div class="name">The Virtue Ethicist</div>
+                        <div class="subtitle">Character and excellence</div>
+                    </div>
+                    <div class="philosophy-card" onclick="showPhilosophies()">
+                        <div class="emoji">🎭</div>
+                        <div class="name">The Existentialist</div>
+                        <div class="subtitle">Authentic self-creation</div>
+                    </div>
+                    <div class="philosophy-card" onclick="showPhilosophies()">
+                        <div class="emoji">🔍</div>
+                        <div class="name">The Skeptic</div>
+                        <div class="subtitle">Question everything</div>
+                    </div>
+                </div>
+                <p style="text-align: center; margin-top: 20px; color: #718096;">
+                    <em>And 5 more fascinating types to discover...</em>
+                </p>
+            </div>
+        </section>
+
+        <!-- Game Section -->
+        <section id="game-section" class="section game-interface">
+            <div class="card">
+                <div class="question-counter" id="question-counter">Question 1 of 8</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 12.5%;"></div>
+                </div>
+
+                <div class="scenario-card" id="scenario-card">
+                    <div class="scenario-title" id="scenario-title"></div>
+                    <div class="scenario-text" id="scenario-text"></div>
+                </div>
+
+                <div class="choices" id="choices"></div>
+
+                <button class="next-btn hidden" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="section results-container">
+            <div class="card">
+                <div class="philosophy-avatar" id="philosophy-avatar"></div>
+                <h1 class="philosophy-name" id="philosophy-name"></h1>
+                <p class="philosophy-subtitle" id="philosophy-subtitle"></p>
+                <div class="philosophy-description" id="philosophy-description"></div>
+                
+                <div class="philosophy-traits" id="philosophy-traits"></div>
+                
+                <div class="compatibility-section">
+                    <h3 class="compatibility-title">Famous Philosophers Who Share Your Views</h3>
+                    <div id="famous-philosophers"></div>
+                </div>
+
+                <button class="next-btn" onclick="showPhilosophies()">Explore All 10 Types</button>
+                <button class="next-btn" onclick="playAgain()">Take Quiz Again</button>
+            </div>
+        </section>
+
+        <!-- All Philosophies Section -->
+        <section id="philosophies-section" class="section philosophies-container hidden">
+            <div class="card">
+                <h1>The 10 Philosophical Personality Types</h1>
+                <p>Explore all the philosophical traditions and find kindred spirits in the world of ideas.</p>
+                
+                <div id="all-philosophies-grid"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Enhanced game data with philosophy tracking
+        const gameData = [
+            {
+                title: "The Trolley Problem",
+                scenario: "A runaway trolley is heading toward five people tied to the tracks. You can pull a lever to divert it to another track, but there's one person on that track who will die instead.",
+                choices: [
+                    { text: "Pull the lever to save five lives", philosophy: "Utilitarian", tag: "Greatest Good" },
+                    { text: "Don't pull the lever - it's wrong to directly cause someone's death", philosophy: "Deontologist", tag: "Moral Duty" },
+                    { text: "This scenario is too artificial to judge real moral decisions", philosophy: "Pragmatist", tag: "Real World" }
+                ]
+            },
+            {
+                title: "The Cave Allegory",
+                scenario: "You've lived your whole life chained in a cave, seeing only shadows on the wall. Someone breaks your chains and shows you the real world outside. What do you do?",
+                choices: [
+                    { text: "Return to tell the other prisoners about reality", philosophy: "Platonist", tag: "Truth Seeker" },
+                    { text: "Stay outside and enjoy your newfound freedom", philosophy: "Hedonist", tag: "Pleasure" },
+                    { text: "Question whether this 'real world' is actually real", philosophy: "Skeptic", tag: "Question All" }
+                ]
+            },
+            {
+                title: "The Ship of Theseus",
+                scenario: "A ship has all its parts gradually replaced over time. When the last original part is replaced, is it still the same ship?",
+                choices: [
+                    { text: "Yes, it's the same ship - identity is about continuity of purpose", philosophy: "Pragmatist", tag: "Function" },
+                    { text: "No, it's a completely different ship made of different materials", philosophy: "Materialist", tag: "Physical" },
+                    { text: "Identity is just a useful concept we invented - the question is meaningless", philosophy: "Skeptic", tag: "Concepts" }
+                ]
+            },
+            {
+                title: "Free Will Dilemma",
+                scenario: "Scientists claim they can predict your next decision by scanning your brain. If your choices are predictable, are you truly free?",
+                choices: [
+                    { text: "We have free will despite brain activity - consciousness transcends matter", philosophy: "Idealist", tag: "Mind" },
+                    { text: "Free will is an illusion - we're sophisticated biological machines", philosophy: "Materialist", tag: "Determinism" },
+                    { text: "We create our freedom through authentic choices, regardless of prediction", philosophy: "Existentialist", tag: "Authenticity" }
+                ]
+            },
+            {
+                title: "The Experience Machine",
+                scenario: "You can plug into a machine that gives you any experiences you want - you'll feel happy and fulfilled, but none of it will be 'real'. Do you plug in?",
+                choices: [
+                    { text: "Yes - happiness and positive experiences are what matter most", philosophy: "Hedonist", tag: "Pleasure" },
+                    { text: "No - authenticity, real relationships, and genuine achievement matter", philosophy: "Virtue Ethicist", tag: "Excellence" },
+                    { text: "I would choose based on what serves my authentic self-project", philosophy: "Existentialist", tag: "Self-Creation" }
+                ]
+            },
+            {
+                title: "The Veil of Ignorance",
+                scenario: "You must design a just society, but you don't know what position you'll have in it - rich or poor, talented or not. What principles do you choose?",
+                choices: [
+                    { text: "Maximize benefits for the worst-off members of society", philosophy: "Utilitarian", tag: "Welfare" },
+                    { text: "Ensure equal basic rights and opportunities for all", philosophy: "Deontologist", tag: "Rights" },
+                    { text: "Focus on cultivating virtue and wisdom in citizens", philosophy: "Virtue Ethicist", tag: "Character" }
+                ]
+            },
+            {
+                title: "The Meaning of Life",
+                scenario: "Someone asks you: 'What's the point of existence?' You've been thinking about this your whole life. What's your answer?",
+                choices: [
+                    { text: "To reduce suffering and increase happiness in the world", philosophy: "Utilitarian", tag: "Happiness" },
+                    { text: "To create your own meaning through choices and authentic living", philosophy: "Existentialist", tag: "Self-Made" },
+                    { text: "To develop virtue, wisdom, and excellence of character", philosophy: "Virtue Ethicist", tag: "Flourishing" },
+                    { text: "The question itself assumes meaning exists - I'm not convinced it does", philosophy: "Skeptic", tag: "Doubt" }
+                ]
+            },
+            {
+                title: "The AI Consciousness Question",
+                scenario: "An AI claims to be conscious and asks for rights. It passes every test we give it, but we can't be certain it's truly experiencing anything. What do you decide?",
+                choices: [
+                    { text: "Grant it rights - consciousness is about function, not biology", philosophy: "Pragmatist", tag: "Function" },
+                    { text: "We have a duty to treat potentially conscious beings with respect", philosophy: "Deontologist", tag: "Duty" },
+                    { text: "We can never truly know - remain skeptical but cautious", philosophy: "Skeptic", tag: "Unknowable" }
+                ]
+            }
+        ];
+
+        // 10 Philosophical personality types
+        const philosophyTypes = {
+            "Utilitarian": {
+                emoji: "⚖️",
+                name: "The Utilitarian",
+                subtitle: "The Greatest Good Calculator",
+                description: "You believe in maximizing happiness and minimizing suffering for the greatest number of people. Your moral compass points toward outcomes - what matters is not the intention behind an action, but its consequences for human welfare. You're practical, compassionate, and always thinking about the bigger picture.",
+                traits: [
+                    { title: "Core Belief", text: "The right action is the one that produces the best overall consequences" },
+                    { title: "Strength", text: "Practical problem-solving focused on real-world welfare" },
+                    { title: "Challenge", text: "Sometimes struggles with individual rights when they conflict with the greater good" },
+                    { title: "Decision Style", text: "Weighs costs and benefits, seeks data-driven solutions" }
+                ],
+                philosophers: ["John Stuart Mill", "Jeremy Bentham", "Peter Singer"],
+                compatibleWith: ["Pragmatist", "Virtue Ethicist"]
+            },
+            "Deontologist": {
+                emoji: "📏",
+                name: "The Deontologist",
+                subtitle: "The Moral Rule Keeper",
+                description: "You believe in universal moral duties and rules that must be followed regardless of consequences. For you, some actions are simply right or wrong in themselves - lying, breaking promises, or using people as mere means are wrong even if they might produce good outcomes. You value consistency, dignity, and moral integrity above all.",
+                traits: [
+                    { title: "Core Belief", text: "Some actions are inherently right or wrong, regardless of consequences" },
+                    { title: "Strength", text: "Unwavering moral principles and respect for human dignity" },
+                    { title: "Challenge", text: "Rigid rules sometimes conflict with compassionate outcomes" },
+                    { title: "Decision Style", text: "Applies universal principles consistently across situations" }
+                ],
+                philosophers: ["Immanuel Kant", "W.D. Ross", "Christine Korsgaard"],
+                compatibleWith: ["Virtue Ethicist", "Idealist"]
+            },
+            "Virtue Ethicist": {
+                emoji: "🌟",
+                name: "The Virtue Ethicist",
+                subtitle: "The Character Builder",
+                description: "You focus on becoming an excellent person rather than just following rules or calculating outcomes. For you, ethics is about cultivating virtues like courage, wisdom, justice, and temperance. You believe that good actions flow naturally from good character, and that the goal of life is human flourishing (eudaimonia).",
+                traits: [
+                    { title: "Core Belief", text: "Ethics is about character - being virtuous leads to right action" },
+                    { title: "Strength", text: "Holistic approach to human flourishing and excellence" },
+                    { title: "Challenge", text: "Virtue can be culturally relative and hard to define precisely" },
+                    { title: "Decision Style", text: "Asks 'What would a virtuous person do?' in each situation" }
+                ],
+                philosophers: ["Aristotle", "Thomas Aquinas", "Alasdair MacIntyre"],
+                compatibleWith: ["Deontologist", "Platonist"]
+            },
+            "Existentialist": {
+                emoji: "🎭",
+                name: "The Existentialist",
+                subtitle: "The Authentic Self-Creator",
+                description: "You believe that existence precedes essence - you create yourself through your choices and actions. There's no predetermined human nature or cosmic purpose, which means you're radically free but also fully responsible for who you become. You value authenticity, individual freedom, and the courage to create meaning in an absurd universe.",
+                traits: [
+                    { title: "Core Belief", text: "You are condemned to be free - you must create your own essence" },
+                    { title: "Strength", text: "Embraces radical freedom and personal responsibility" },
+                    { title: "Challenge", text: "Freedom can be overwhelming; authenticity can be isolating" },
+                    { title: "Decision Style", text: "Chooses based on authentic self-expression and personal values" }
+                ],
+                philosophers: ["Jean-Paul Sartre", "Simone de Beauvoir", "Albert Camus"],
+                compatibleWith: ["Skeptic", "Pragmatist"]
+            },
+            "Skeptic": {
+                emoji: "🔍",
+                name: "The Skeptic",
+                subtitle: "The Eternal Questioner",
+                description: "You believe in questioning assumptions, demanding evidence, and remaining intellectually humble. You're suspicious of dogma, absolute claims, and simple answers to complex questions. Your strength lies in rigorous thinking and helping others avoid false beliefs, though sometimes you struggle to commit to any firm positions.",
+                traits: [
+                    { title: "Core Belief", text: "Most of what we think we know should be questioned and examined" },
+                    { title: "Strength", text: "Excellent critical thinking and intellectual honesty" },
+                    { title: "Challenge", text: "Skepticism can lead to paralysis and difficulty making decisions" },
+                    { title: "Decision Style", text: "Seeks evidence, questions assumptions, remains open to revision" }
+                ],
+                philosophers: ["Socrates", "David Hume", "Sextus Empiricus"],
+                compatibleWith: ["Pragmatist", "Existentialist"]
+            },
+            "Pragmatist": {
+                emoji: "🛠️",
+                name: "The Pragmatist",
+                subtitle: "The Practical Problem Solver",
+                description: "You believe that the value of ideas lies in their practical consequences and usefulness. Abstract theories matter less than what works in the real world. You're flexible, experimental, and focused on solving concrete problems rather than pursuing absolute truths. For you, truth itself is what works reliably in practice.",
+                traits: [
+                    { title: "Core Belief", text: "The truth is what works - ideas should be judged by their practical consequences" },
+                    { title: "Strength", text: "Flexible, adaptive, focused on real-world solutions" },
+                    { title: "Challenge", text: "May sacrifice important principles for expedient solutions" },
+                    { title: "Decision Style", text: "Tests ideas through experience and adjusts based on results" }
+                ],
+                philosophers: ["John Dewey", "William James", "Richard Rorty"],
+                compatibleWith: ["Utilitarian", "Skeptic"]
+            },
+            "Platonist": {
+                emoji: "💎",
+                name: "The Platonist",
+                subtitle: "The Truth Seeker",
+                description: "You believe in eternal truths and perfect forms that exist beyond the physical world. For you, the material world is just a shadow of higher reality. You're drawn to mathematics, logic, and abstract reasoning. You believe that through philosophical contemplation, we can discover absolute truths about justice, beauty, and goodness.",
+                traits: [
+                    { title: "Core Belief", text: "True reality exists in perfect, eternal forms beyond the physical world" },
+                    { title: "Strength", text: "Seeks absolute truth and objective standards of value" },
+                    { title: "Challenge", text: "Abstract ideals can seem disconnected from practical life" },
+                    { title: "Decision Style", text: "Seeks to align actions with eternal truths and perfect standards" }
+                ],
+                philosophers: ["Plato", "Augustine", "Anselm"],
+                compatibleWith: ["Virtue Ethicist", "Idealist"]
+            },
+            "Hedonist": {
+                emoji: "🌺",
+                name: "The Hedonist",
+                subtitle: "The Pleasure Seeker",
+                description: "You believe that pleasure is the highest good and pain the greatest evil. Life should be lived to maximize enjoyable experiences and minimize suffering. You're not necessarily shallow - you might prefer refined pleasures of the mind over crude physical ones, but ultimately you judge everything by how it feels.",
+                traits: [
+                    { title: "Core Belief", text: "Pleasure is good, pain is bad - life should maximize positive experiences" },
+                    { title: "Strength", text: "Appreciates life's joys and values personal well-being" },
+                    { title: "Challenge", text: "May neglect long-term consequences or others' needs" },
+                    { title: "Decision Style", text: "Chooses based on what brings the most pleasure and least pain" }
+                ],
+                philosophers: ["Epicurus", "Jeremy Bentham", "Michel Onfray"],
+                compatibleWith: ["Utilitarian", "Existentialist"]
+            },
+            "Materialist": {
+                emoji: "⚛️",
+                name: "The Materialist",
+                subtitle: "The Physical Realist",
+                description: "You believe that reality consists entirely of matter and energy operating according to physical laws. Consciousness, thoughts, and experiences are all products of brain activity. You're scientifically minded and skeptical of supernatural claims, finding beauty and meaning in the natural world without needing anything beyond it.",
+                traits: [
+                    { title: "Core Belief", text: "Everything that exists is physical - mind emerges from matter" },
+                    { title: "Strength", text: "Scientifically grounded and evidence-based worldview" },
+                    { title: "Challenge", text: "May struggle to account for subjective experiences and values" },
+                    { title: "Decision Style", text: "Relies on scientific evidence and natural explanations" }
+                ],
+                philosophers: ["Democritus", "Karl Marx", "Daniel Dennett"],
+                compatibleWith: ["Skeptic", "Pragmatist"]
+            },
+            "Idealist": {
+                emoji: "💭",
+                name: "The Idealist",
+                subtitle: "The Mind-First Philosopher",
+                description: "You believe that reality is fundamentally mental or spiritual in nature. Ideas, consciousness, or spirit are more fundamental than matter. The physical world might be an illusion, a construction of mind, or dependent on consciousness for its existence. You find the deepest truths in introspection and rational reflection.",
+                traits: [
+                    { title: "Core Belief", text: "Mind or spirit is more fundamental than matter" },
+                    { title: "Strength", text: "Values consciousness, meaning, and inner experience" },
+                    { title: "Challenge", text: "May seem disconnected from practical, material concerns" },
+                    { title: "Decision Style", text: "Guided by rational insight and spiritual intuition" }
+                ],
+                philosophers: ["George Berkeley", "G.W.F. Hegel", "Immanuel Kant"],
+                compatibleWith: ["Platonist", "Deontologist"]
+            }
+        };
+
+        // Game State
+        let currentQuestionIndex = 0;
+        let philosophyScores = {};
+        let gameInProgress = false;
+
+        // Initialize philosophy scores
+        Object.keys(philosophyTypes).forEach(philosophy => {
+            philosophyScores[philosophy] = 0;
+        });
+
+        // Navigation Functions
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function showHome() {
+            showSection('home-section');
+            document.getElementById('home-link').classList.add('active');
+        }
+
+        function showGame() {
+            showSection('game-section');
+            document.getElementById('game-link').classList.add('active');
+            if (!gameInProgress) {
+                startGame();
+            }
+        }
+
+        function showPhilosophies() {
+            showSection('philosophies-section');
+            document.getElementById('philosophies-link').classList.add('active');
+            displayAllPhilosophies();
+        }
+
+        function showResults() {
+            showSection('results-section');
+            displayResults();
+        }
+
+        // Game Logic
+        function startGame() {
+            currentQuestionIndex = 0;
+            gameInProgress = true;
+            
+            // Reset philosophy scores
+            Object.keys(philosophyTypes).forEach(philosophy => {
+                philosophyScores[philosophy] = 0;
+            });
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = gameData[currentQuestionIndex];
+            document.getElementById('question-counter').textContent = `Question ${currentQuestionIndex + 1} of 8`;
+            document.getElementById('progress-fill').style.width = `${((currentQuestionIndex + 1) / 8) * 100}%`;
+            document.getElementById('scenario-title').textContent = question.title;
+            document.getElementById('scenario-text').textContent = question.scenario;
+            
+            const choicesDiv = document.getElementById('choices');
+            choicesDiv.innerHTML = '';
+            
+            question.choices.forEach((choice, index) => {
+                const button = document.createElement('button');
+                button.className = 'choice-btn';
+                button.innerHTML = `
+                    ${choice.text}
+                    <span class="philosophy-tag">${choice.tag}</span>
+                `;
+                button.onclick = () => selectChoice(index);
+                choicesDiv.appendChild(button);
+            });
+            
+            document.getElementById('next-btn').classList.add('hidden');
+        }
+
+        function selectChoice(choiceIndex) {
+            const question = gameData[currentQuestionIndex];
+            const choice = question.choices[choiceIndex];
+            
+            // Add to philosophy score
+            philosophyScores[choice.philosophy]++;
+            
+            // Disable choice buttons and highlight selected
+            const choiceButtons = document.querySelectorAll('.choice-btn');
+            choiceButtons.forEach((btn, index) => {
+                btn.disabled = true;
+                if (index === choiceIndex) {
+                    btn.style.background = 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)';
+                    btn.style.transform = 'scale(1.02)';
+                } else {
+                    btn.style.opacity = '0.5';
+                }
+            });
+            
+            // Show next button or finish game
+            setTimeout(() => {
+                if (currentQuestionIndex < gameData.length - 1) {
+                    document.getElementById('next-btn').classList.remove('hidden');
+                } else {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            showQuestion();
+        }
+
+        function endGame() {
+            gameInProgress = false;
+            setTimeout(() => {
+                showResults();
+            }, 500);
+        }
+
+        function playAgain() {
+            showGame();
+        }
+
+        // Results Display
+        function displayResults() {
+            // Find dominant philosophy
+            let dominantPhilosophy = '';
+            let maxScore = 0;
+            
+            for (let philosophy in philosophyScores) {
+                if (philosophyScores[philosophy] > maxScore) {
+                    maxScore = philosophyScores[philosophy];
+                    dominantPhilosophy = philosophy;
+                }
+            }
+            
+            const result = philosophyTypes[dominantPhilosophy];
+            
+            // Display results
+            document.getElementById('philosophy-avatar').textContent = result.emoji;
+            document.getElementById('philosophy-name').textContent = result.name;
+            document.getElementById('philosophy-subtitle').textContent = result.subtitle;
+            document.getElementById('philosophy-description').textContent = result.description;
+            
+            // Display traits
+            const traitsDiv = document.getElementById('philosophy-traits');
+            traitsDiv.innerHTML = '';
+            result.traits.forEach(trait => {
+                const traitCard = document.createElement('div');
+                traitCard.className = 'trait-card';
+                traitCard.innerHTML = `
+                    <div class="trait-title">${trait.title}</div>
+                    <div class="trait-text">${trait.text}</div>
+                `;
+                traitsDiv.appendChild(traitCard);
+            });
+            
+            // Display famous philosophers
+            const philosophersDiv = document.getElementById('famous-philosophers');
+            philosophersDiv.innerHTML = result.philosophers.map(philosopher => 
+                `<span class="philosophy-badge" style="margin: 5px; padding: 8px 16px; display: inline-block;">${philosopher}</span>`
+            ).join('');
+        }
+
+        // Display all philosophies
+        function displayAllPhilosophies() {
+            const gridDiv = document.getElementById('all-philosophies-grid');
+            gridDiv.innerHTML = '';
+            gridDiv.className = 'philosophy-grid';
+            
+            Object.keys(philosophyTypes).forEach(key => {
+                const philosophy = philosophyTypes[key];
+                const card = document.createElement('div');
+                card.className = 'philosophy-card';
+                card.innerHTML = `
+                    <div class="emoji">${philosophy.emoji}</div>
+                    <div class="name">${philosophy.name}</div>
+                    <div class="subtitle">${philosophy.subtitle}</div>
+                `;
+                card.onclick = () => showPhilosophyDetail(key);
+                gridDiv.appendChild(card);
+            });
+        }
+
+        function showPhilosophyDetail(philosophyKey) {
+            const philosophy = philosophyTypes[philosophyKey];
+            
+            // Create a modal or detail view (simplified version)
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2000;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div style="background: white; padding: 40px; border-radius: 20px; max-width: 600px; max-height: 80vh; overflow-y: auto;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 4em; margin-bottom: 20px;">${philosophy.emoji}</div>
+                        <h2>${philosophy.name}</h2>
+                        <p style="font-style: italic; color: #718096; margin-bottom: 20px;">${philosophy.subtitle}</p>
+                        <p style="line-height: 1.6; margin-bottom: 20px;">${philosophy.description}</p>
+                        <p><strong>Famous Philosophers:</strong> ${philosophy.philosophers.join(', ')}</p>
+                        <button onclick="this.closest('div').style.display='none'" style="margin-top: 20px; padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 10px; cursor: pointer;">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            };
+            
+            document.body.appendChild(modal);
+        }
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            showHome();
+        });
+
+        // Add keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (gameInProgress && document.getElementById('game-section').classList.contains('active')) {
+                const choiceButtons = document.querySelectorAll('.choice-btn:not(:disabled)');
+                const keyNum = parseInt(e.key);
+                if (keyNum >= 1 && keyNum <= choiceButtons.length) {
+                    choiceButtons[keyNum - 1].click();
+                }
+            }
+            
+            if (e.key === 'Enter') {
+                const nextBtn = document.getElementById('next-btn');
+                if (!nextBtn.classList.contains('hidden')) {
+                    nextBtn.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
